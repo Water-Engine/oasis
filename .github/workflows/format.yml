@@ -1,0 +1,35 @@
+name: Formatting
+
+on:
+  push:
+    branches:
+      - main
+      - 'feature/**'
+    paths:
+      - '.github/workflows/format.yml'
+      - 'Makefile'
+      - 'src/**'
+      - 'include/**'
+      - 'tests/**'
+  pull_request:
+    branches:
+      - main
+    paths:
+      - '.github/workflows/format.yml'
+      - 'Makefile'
+      - 'src/**'
+      - 'include/**'
+      - 'tests/**'
+
+jobs:
+  fmt-check:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Install Toolchain
+        run: choco install mingw make -y
+
+      - name: Check formatting
+        run: make fmt-check
