@@ -4,7 +4,7 @@ pub fn build(b: *std.Build) void {
     const target = b.standardTargetOptions(.{});
 
     const exe = b.addExecutable(.{
-        .name = "water",
+        .name = "oasis",
         .target = target,
         .optimize = .ReleaseFast,
     });
