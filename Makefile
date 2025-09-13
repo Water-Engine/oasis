@@ -1,4 +1,4 @@
-TARGET := water
+TARGET := oasis
 SRC_DIR := src
 INC_DIR := include
 VENDOR_DIR := vendor
@@ -18,10 +18,9 @@ SRCS := $(call rwildcard, $(SRC_DIR)/, *.cpp)
 HEADERS := $(wildcard $(INC_DIR)/*.h) $(wildcard $(INC_DIR)/*.hpp) \
            $(wildcard $(VENDOR_DIR)/*.h) $(wildcard $(VENDOR_DIR)/*.hpp)
 
-TEST_SRCS := $(filter-out $(TEST_DIR)/perft.cpp, $(wildcard $(TEST_DIR)/*.cpp))
+TEST_SRCS := $(wildcard $(TEST_DIR)/*.cpp)
 TEST_OBJS := $(patsubst $(TEST_DIR)/%.cpp,$(BUILD_DIR)/tests/%.o,$(TEST_SRCS))
 TEST_BIN := $(BIN_ROOT)/tests/run_tests$(EXE)
-PERFT_BIN := $(BIN_ROOT)/perft/run_perft$(EXE)
 
 FMT_SRCS := $(SRCS) \
             $(call rwildcard,$(INC_DIR)/,*.h) \
@@ -105,30 +104,6 @@ $(TEST_BIN): $(CATCH_OBJ) $(TEST_OBJS) $(LIB_OBJS_FOR_TESTS)
 	@$(call MKDIR,$(dir $@))
 	$(CXX) $(CXXFLAGS_TEST) -o $@ $^
 
-# ================ PERFT TARGET ================
-
-PERFT_TEST_SRC := $(TEST_DIR)/perft.cpp
-PERFT_OBJ_DIR := $(BUILD_DIR)/perft
-PERFT_OBJ := $(PERFT_OBJ_DIR)/perft.o
-CATCH_OBJ_PERFT := $(PERFT_OBJ_DIR)/catch_amalgamated.o
-
-CXXFLAGS_PERFT = -std=c++20 -O2 -Wall -Wextra $(INCLUDES) $(DEPFLAGS) -DPERFT
-
-$(PERFT_OBJ): $(PERFT_TEST_SRC) $(HEADERS) $(PCH_GCH_RELEASE)
-	@$(call MKDIR,$(dir $@))
-	$(CXX) $(CXXFLAGS_PERFT) -include $(PCH) $(INCLUDES) -I$(TEST_DIR) -c $< -o $@
-
-$(CATCH_OBJ_PERFT): $(TEST_DIR)/test_framework/catch_amalgamated.cpp
-	@$(call MKDIR,$(dir $@))
-	$(CXX) $(CXXFLAGS_PERFT) $(INCLUDES) -I$(TEST_DIR) -c $< -o $@
-
-$(PERFT_BIN): $(CATCH_OBJ_PERFT) $(PERFT_OBJ) $(LIB_OBJS_FOR_TESTS)
-	@$(call MKDIR,$(dir $@))
-	$(CXX) $(CXXFLAGS_PERFT) -o $@ $^
-
-perft: $(PERFT_BIN)
-	@$(PERFT_BIN)
-
 # ================ BINARY DIRECTORIES ================
 
 $(TARGET_BIN_DIST): $(OBJS_DIST)
@@ -200,7 +175,7 @@ else
 endif
 
 cloc:
-	@cloc Makefile src include tests scripts --not-match-f="(catch_amalgamated.hpp|catch_amalgamated.cpp|chess.hpp)"
+	@cloc Makefile src include tests scripts prototyping --not-match-f="(catch_amalgamated.hpp|catch_amalgamated.cpp|chess.hpp)"
 
 # ================ FORMATTING ================
 
@@ -209,17 +184,6 @@ fmt:
 
 fmt-check:
 	@clang-format --dry-run --Werror $(FMT_SRCS)
-
-# ================ MAGIC BITBOARD GENERATOR ================
-
-SLIDER_BIN := scripts/slider_generators$(EXE)
-
-sliders: $(SLIDER_BIN)
-	@$(SLIDER_BIN)
-
-$(SLIDER_BIN): scripts/slider_generators.c
-	@$(call MKDIR,$(BIN_ROOT))
-	$(C) -std=c11 $< -o $@
 
 # ================ HELP ME ================
 
@@ -239,7 +203,6 @@ dist              > Max optimization, profiling disabled\n\
 release           > Slightly fewer optimizations, no DEBUG define\n\
 debug             > No optimization, PROFILE and DEBUG defined\n\
 test              > Run unit tests (excludes perft tests)\n\
-perft             > Run the perft tests\n\
 run               > Build and run the release binary\n\
 run-dist          > Build and run the dist binary\n\
 run-release       > Build and run the release binary\n\
@@ -251,10 +214,9 @@ clean             > Remove object files, dependency files, and binaries\n\
 General Targets:\n\
 \n\
 cloc              > Count lines of code in relevant directories\n\
-sliders           > Generate the magic numbers for the rooks and bishops\n\
 help              > Print this help menu\n\
 "
 
 .PHONY: default install all dist release debug \
-		test perft run run-dist run-release run-debug \
-		clean fmt fmt-check cloc sliders help
+		test run run-dist run-release run-debug \
+		clean fmt fmt-check cloc help

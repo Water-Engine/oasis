@@ -1,20 +1,24 @@
-# oasis [![C++20](https://img.shields.io/badge/C%2B%2B-20-blue?logo=c%2B%2B&logoColor=white)](https://en.cppreference.com/w/cpp/20.html) [![License](https://img.shields.io/github/license/Water-Engine/water)](LICENSE) [![LOC](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/Water-Engine/water/loc/.github/loc_badge.json)](https://github.com/Water-Engine/water/actions/workflows/loc.yml) [![Last commit](https://img.shields.io/github/last-commit/Water-Engine/water)](https://github.com/Water-Engine/water) [![Formatting](https://github.com/Water-Engine/water/actions/workflows/format.yml/badge.svg)](https://github.com/Water-Engine/water/actions/workflows/format.yml) [![CI](https://github.com/Water-Engine/water/actions/workflows/ci.yml/badge.svg)](https://github.com/Water-Engine/water/actions/workflows/ci.yml)
-A chess engine written in C++, powered by Disservin's [chess-library](https://github.com/Disservin/chess-library), utilizing a hybrid approach of classical and neural network evaluation.
+# oasis [![C++20](https://img.shields.io/badge/C%2B%2B-20-blue?logo=c%2B%2B&logoColor=white)](https://en.cppreference.com/w/cpp/20.html) [![License](https://img.shields.io/github/license/Water-Engine/oasis)](LICENSE) [![LOC](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/Water-Engine/oasis/loc/.github/loc_badge.json)](https://github.com/Water-Engine/oasis/actions/workflows/loc.yml) [![Last commit](https://img.shields.io/github/last-commit/Water-Engine/oasis)](https://github.com/Water-Engine/oasis) [![Formatting](https://github.com/Water-Engine/oasis/actions/workflows/format.yml/badge.svg)](https://github.com/Water-Engine/oasis/actions/workflows/format.yml) [![CI](https://github.com/Water-Engine/oasis/actions/workflows/ci.yml/badge.svg)](https://github.com/Water-Engine/oasis/actions/workflows/ci.yml)
+THe water engine's neural network generator.
 
 # Goals
-While this project is still a major WIP, the end-goal is a dual-mode engine:
-- An iterative search engine with Alpha-Beta Pruning, Quiescence, etc.
-- A neural network-powered engine using Monte Carlo Tree Search (MCTS)
+The ultimate goal of this project is to create a fully functional machine learning C++ suite for training the water engine's NNUE-based evaluation function and its ML-powered MCTS. As this is a monstrous undertaking, Python is used for initial prototyping and for getting working models for water. 
 
 # Getting Started
-For a quick build of the project, run:
+To interact with the python prototype, run:
 ```shell
-git clone https://github.com/Water-Engine/water.git
-cd water
-make -j4 run
+git clone https://github.com/Water-Engine/oasis.git
+cd oasis
+pip install -r requirements.txt
+python prototyping/main.py
 ```
 
-_The engine communicates through the UCI protocol for terminal interaction._
+For a quick build of the C++ program, run:
+```shell
+git clone https://github.com/Water-Engine/oasis.git
+cd oasis
+make -j4 run
+```
 
 # Core Dependencies
 - g++ with C++20
@@ -22,11 +26,11 @@ _The engine communicates through the UCI protocol for terminal interaction._
 - Clang-format
 - [Catch2](https://github.com/catchorg/Catch2) for tests (included in this repository)
 - [cloc](https://github.com/AlDanial/cloc) for cloc make target (optional)
-- [python](https://www.python.org/downloads/) for script running
+- [python](https://www.python.org/downloads/) for prototyping
 - [Zig](https://ziglang.org/download/) for cross-platform packaging (optional) 
 
-# Building water
-The project's build system uses C++20 and GNU Make, and it is recommended that you run make with the flag `-j4` to run batch jobs. Below is a list of targets with their requirements where applicable:
+# Building oasis
+The project's build system uses C++20 and GNU Make, and it is recommended that you run make with the flag `-j4` to run batch jobs. These commands will only function once the C++ suite enters it's development stage. Below is a list of targets with their requirements where applicable:
 
 ## Build Specific Targets
 - `default`: Builds the release configuration (default)
@@ -51,20 +55,4 @@ The project's build system uses C++20 and GNU Make, and it is recommended that y
 - `help`: Print this help menu
 
 # For Developers
-Contributing guidelines, information on tests, formatting, and profiling can be found in [CONTRIBUTING.md](.github/CONTRIBUTING.md). You can also check out a WIP roadmap for the project at [ROADMAP.md](.github/ROADMAP.md).
-
-### Why Contribute?
-- Learn engine internals such as move generation, evaluation, and search  
-- Work on low-level performance optimizations in modern C++ 
-- Explore and improve machine learning fine-tuning for chess 
-
-# Credits
-Water could not be where it is today without the formative work done by experienced developers in the past. Core references used during development include:
-- [chess-library](https://github.com/Disservin/chess-library) revived my motivation after many failed attempts
-    - Maybe in the future I'll roll my own core library, but it was taking too much out of me
-    - This library saved a lot of time and frustration for me, so I would like to personally thank the chess-library teams for their hard work
-- [Syzygy](https://www.chessprogramming.org/Syzygy_Bases) tables originally created by Dutch mathematician [Ronald de Man](https://www.chessprogramming.org/Ronald_de_Man)
-- [Fathom](https://github.com/jdart1/Fathom) syzygy tablebase reader - rewritten and catered to the Water engine
-- Sebastian Lague's [Chess Coding Adventure](https://github.com/SebLague/Chess-Coding-Adventure) engine - used for comparative testing for elo estimates
-- The [Aurora](https://github.com/kjljixx/Aurora-Chess-Engine) chess engine which previously implemented a similar hybrid evaluation approach
-- The legendary [Stockfish](https://github.com/official-stockfish/Stockfish) engine - used for verifying certain tests on the fly
+Contributing guidelines, information on tests, formatting, and profiling can be found in [CONTRIBUTING.md](.github/CONTRIBUTING.md).
