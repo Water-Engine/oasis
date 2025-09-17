@@ -27,7 +27,7 @@ make -j4 run
 - [Catch2](https://github.com/catchorg/Catch2) for tests (included in this repository)
 - [cloc](https://github.com/AlDanial/cloc) for cloc make target (optional)
 - [python](https://www.python.org/downloads/) for prototyping
-- [Zig](https://ziglang.org/download/) for cross-platform packaging (optional) 
+- [Zig 0.15.1](https://ziglang.org/download/) for cross-platform packaging (optional) 
 
 # Building oasis
 The project's build system uses C++20 and GNU Make, and it is recommended that you run make with the flag `-j4` to run batch jobs. These commands will only function once the C++ suite enters it's development stage. Below is a list of targets with their requirements where applicable:
